@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>БРИФ — Разработка лендинга | RAUJIN STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #080808;
+    --gold: #C4A35A;
+    --gold-dim: rgba(196, 163, 90, 0.15);
+    --gold-border: rgba(196, 163, 90, 0.25);
+    --text: #E8E4DC;
+    --text-dim: rgba(232, 228, 220, 0.45);
+    --text-mid: rgba(232, 228, 220, 0.7);
+    --surface: rgba(255,255,255,0.03);
+    --surface-hover: rgba(196, 163, 90, 0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    z-index: 999;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg, rgba(8,8,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .logo span {
+    color: var(--text-dim);
+    font-weight: 300;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    margin-left: 12px;
+  }
+
+  .header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(196, 163, 90, 0.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* 13° rotated square motif */
+  .hero-motif {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%) rotate(13deg);
+    width: 320px;
+    height: 320px;
+    border: 1px solid rgba(196, 163, 90, 0.08);
+    pointer-events: none;
+  }
+  .hero-motif::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border: 1px solid rgba(196, 163, 90, 0.05);
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-mid);
+    max-width: 480px;
+    line-height: 1.8;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 32px;
+    height: 1px;
+    background: var(--gold-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gold);
+    animation: slideLine 2s ease-in-out infinite;
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 48px 120px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gold-border);
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    min-width: 32px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text);
+  }
+
+  .section-tag {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--gold-border);
+  }
+
+  /* FIELD */
+  .field {
+    margin-bottom: 28px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .field-hint {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .field-required {
+    color: var(--gold);
+    margin-left: 4px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--gold-border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    appearance: none;
+    -webkit-appearance: none;
+    resize: vertical;
+  }
+
+  textarea { min-height: 100px; }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--gold);
+    background: var(--surface-hover);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: rgba(232, 228, 220, 0.2);
+    font-style: italic;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A35A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+
+  select option {
+    background: #111;
+    color: var(--text);
+  }
+
+  /* RADIO / CHECKBOX */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+
+  .option-item {
+    position: relative;
+  }
+
+  .option-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .option-item label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--gold-border);
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-mid);
+    transition: all 0.2s;
+    background: var(--surface);
+  }
+
+  .option-item label::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--gold-border);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    transform: rotate(13deg);
+  }
+
+  .option-item input:checked + label {
+    border-color: var(--gold);
+    color: var(--text);
+    background: var(--gold-dim);
+  }
+
+  .option-item input:checked + label::before {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .option-item label:hover {
+    border-color: rgba(196, 163, 90, 0.5);
+    background: var(--surface-hover);
+  }
+
+  /* RANGE */
+  .range-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 1px;
+    background: var(--gold-border);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--gold);
+    transform: rotate(13deg);
+    cursor: pointer;
+  }
+
+  .range-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--gold);
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-border);
+  }
+
+  .divider-mark {
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--gold);
+    transform: rotate(13deg);
+    flex-shrink: 0;
+  }
+
+  /* INFO BLOCK */
+  .info-block {
+    padding: 20px 24px;
+    border-left: 1px solid var(--gold);
+    background: var(--gold-dim);
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  .info-block strong {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* SUBMIT */
+  .submit-area {
+    text-align: center;
+    padding: 80px 0 40px;
+  }
+
+  .submit-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 56px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+
+  .submit-btn:hover::before { transform: scaleX(1); }
+  .submit-btn:hover { color: var(--bg); }
+  .submit-btn span { position: relative; z-index: 1; }
+
+  .submit-note {
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  /* SUCCESS */
+  #success-msg {
+    display: none;
+    padding: 24px;
+    border: 1px solid var(--gold);
+    background: var(--gold-dim);
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  #success-msg.show { display: block; }
+
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gold-border);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideLine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    header { padding: 20px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    main { padding: 0 24px 80px; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .hero-motif { display: none; }
+    .hero-meta { gap: 28px; flex-wrap: wrap; }
+    .options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">RAUJIN <span>Studio</span></div>
+  <div class="header-label">Бриф · Недвижимость · 2026</div>
+</header>
+
+<section class="hero">
+  <div class="hero-motif"></div>
+  <div class="hero-eyebrow">// RAUJIN STUDIO — Бриф на разработку</div>
+  <h1 class="hero-title">Лендинг<br>для <em>недвижимости</em></h1>
+  <p class="hero-sub">
+    Заполните бриф максимально подробно — это основа для создания лендинга, 
+    который будет работать как инструмент продаж, а не просто «сайт-визитка».
+    Чем точнее ответы — тем сильнее результат.
+  </p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Блоков</span>
+      <span class="meta-value">09</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Вопросов</span>
+      <span class="meta-value">40+</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Время заполнения</span>
+      <span class="meta-value">~25 мин</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Прокрутите вниз
+  </div>
+</section>
+
+<main>
+
+  <div class="info-block">
+    <strong>Важно:</strong> отвечайте развёрнуто — там, где не знаете точного ответа, пишите своё лучшее предположение исходя из опыта работы с клиентами. Поля со звёздочкой <strong>*</strong> обязательны.
+  </div>
+
+  <!-- BLOCK 1: CONTACTS -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-number">01 /</span>
+      <h2 class="section-title">Контакты</h2>
+      <span class="section-tag">Организация</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Ваше имя <span class="field-required">*</span></label>
+      <input type="text" placeholder="Иван Иванов">
+    </div>
+    <div class="field">
+      <label class="field-label">Название компании / проекта <span class="field-required">*</span></label>
+      <input type="text" placeholder="ООО «Пример», агентство «...»">
+    </div>
+    <div class="field">
+      <label class="field-label">Телефон / Telegram <span class="field-required">*</span></label>
+      <input type="tel" placeholder="+7 900 000-00-00 или @username">
+    </div>
+    <div class="field">
+      <label class="field-label">Email</label>
+      <input type="email" placeholder="email@company.ru">
+    </div>
+    <div class="field">
+      <label class="field-label">Сайт или соцсети (если есть)</label>
+      <input type="url" placeholder="https://...">
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 2: PRODUCT -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-number">02 /</span>
+      <h2 class="section-title">Продукт</h2>
+      <span class="section-tag">Что продаём</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Тип объекта / продукта <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="prop_type" id="pt1"><label for="pt1">Новостройки (квартиры)</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt2"><label for="pt2">Вторичная недвижимость</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt3"><label for="pt3">Загородная недвижимость / ИЖС</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt4"><label for="pt4">Коммерческая недвижимость</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt5"><label for="pt5">Аренда жилья</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt6"><label for="pt6">Инвестиционная недвижимость</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt7"><label for="pt7">Зарубежная недвижимость</label></div>
+        <div class="option-item"><input type="radio" name="prop_type" id="pt8"><label for="pt8">Другое</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Название проекта / ЖК / бренда <span class="field-required">*</span></label>
+      <p class="field-hint">Как называется объект или компания, которую нужно продвигать на лендинге?</p>
+      <input type="text" placeholder="ЖК «Название», агентство «...»">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Опишите продукт: что именно продаёте, чем он ценен для покупателя <span class="field-required">*</span></label>
+      <p class="field-hint">Площади, планировки, локация, инфраструктура, уровень отделки — всё, что важно знать.</p>
+      <textarea placeholder="Например: продаём квартиры в ЖК бизнес-класса в 10 минутах от центра. Готовая отделка, потолки 3 м, закрытый двор. Сдача — Q2 2026..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Ценовой диапазон объектов <span class="field-required">*</span></label>
+      <input type="text" placeholder="От 4,5 млн до 18 млн руб.">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли несколько пакетов / форматов? Опишите каждый</label>
+      <p class="field-hint">Например: студии, 1-к, 2-к, пентхаусы — или «базовый» / «с отделкой» / «под ключ».</p>
+      <textarea placeholder="Пакет 1: ... Пакет 2: ..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Стадия готовности / статус объекта</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="stage" id="st1"><label for="st1">Строится (котлован / каркас)</label></div>
+        <div class="option-item"><input type="radio" name="stage" id="st2"><label for="st2">Строится (близко к сдаче)</label></div>
+        <div class="option-item"><input type="radio" name="stage" id="st3"><label for="st3">Сдан, заселяется</label></div>
+        <div class="option-item"><input type="radio" name="stage" id="st4"><label for="st4">Готовый объект / вторичка</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 3: GOAL -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-number">03 /</span>
+      <h2 class="section-title">Цель лендинга</h2>
+      <span class="section-tag">Конверсия</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Главная цель лендинга <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="goal" id="g1"><label for="g1">Сбор заявок на просмотр</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g2"><label for="g2">Запись на звонок с менеджером</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g3"><label for="g3">Запись на экскурсию по объекту</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g4"><label for="g4">Скачивание каталога / планировок</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g5"><label for="g5">Бронирование объекта</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g6"><label for="g6">Получение спецпредложения</label></div>
+        <div class="option-item"><input type="checkbox" name="goal" id="g7"><label for="g7">Другое</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какое целевое действие — главная кнопка / CTA? <span class="field-required">*</span></label>
+      <p class="field-hint">«Записаться на просмотр», «Получить прайс-лист», «Узнать стоимость» — как именно должна звать к действию главная кнопка?</p>
+      <input type="text" placeholder="Например: «Записаться на просмотр»">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Что происходит после заявки? <span class="field-required">*</span></label>
+      <p class="field-hint">Автоответ в Telegram? Звонок менеджера? CRM? Важно настроить ожидания клиента.</p>
+      <textarea placeholder="Менеджер перезванивает в течение 15 минут, договариваемся об удобном времени..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли лид-магнит или спецпредложение для первого касания?</label>
+      <p class="field-hint">Скидка при брони, подборка планировок, расчёт ипотеки, закрытый показ — что можно предложить взамен контакта?</p>
+      <textarea placeholder="Например: бесплатный расчёт ипотеки + подборка 3 подходящих планировок"></textarea>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 4: AUDIENCE -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <span class="section-number">04 /</span>
+      <h2 class="section-title">Целевая аудитория</h2>
+      <span class="section-tag">Кто покупает</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Опишите основные сегменты ЦА <span class="field-required">*</span></label>
+      <p class="field-hint">Возраст, семейное положение, доход, мотивация покупки — чем подробнее, тем точнее будет текст и подача на сайте.</p>
+      <textarea placeholder="Сегмент 1: семьи 30–45 лет, двое детей, улучшают жилищные условия, бюджет 8–12 млн...&#10;Сегмент 2: инвесторы 35–55 лет, покупают для сдачи в аренду..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Основной источник трафика на лендинг <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr1"><label for="tr1">Яндекс.Директ</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr2"><label for="tr2">ВКонтакте (таргет)</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr3"><label for="tr3">Telegram Ads</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr4"><label for="tr4">SEO / органика</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr5"><label for="tr5">Авито / Циан / ДомКлик</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr6"><label for="tr6">Реферальные ссылки</label></div>
+        <div class="option-item"><input type="checkbox" name="traffic" id="tr7"><label for="tr7">Пока не определились</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какие вопросы чаще всего задают потенциальные клиенты? <span class="field-required">*</span></label>
+      <p class="field-hint">Перечислите 5–10 самых частых вопросов и кратко — как вы на них отвечаете.</p>
+      <textarea placeholder="«Можно ли с ипотекой?» — Да, работаем с 15 банками...&#10;«Когда сдача?» — ..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какие главные страхи и возражения у клиентов перед покупкой?</label>
+      <p class="field-hint">«Застройщик не достроит», «Цена вырастет», «Не устроит планировка» — что останавливает от сделки?</p>
+      <textarea placeholder="1. Боятся, что застройщик обанкротится...&#10;2. Не понимают, как читать планировку..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">С какими проблемами клиент приходит до покупки?</label>
+      <p class="field-hint">Живут в тесноте, платят аренду, хотят вложить накопления — что за «боль» приводит к вам?</p>
+      <textarea placeholder="Платят аренду и хотят собственное жильё. Не могут подобрать район под бюджет..."></textarea>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 5: USP -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <span class="section-number">05 /</span>
+      <h2 class="section-title">УТП и позиционирование</h2>
+      <span class="section-tag">Отличие</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">УТП: чем вы принципиально отличаетесь от конкурентов? <span class="field-required">*</span></label>
+      <p class="field-hint">Не «качество и надёжность» — а конкретные факты: локация, застройщик, условия, сервис, цена.</p>
+      <textarea placeholder="Единственный ЖК с подогреваемой парковкой в этом районе. Ипотека от 5% через нашего ипотечного брокера..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Основные конкуренты <span class="field-required">*</span></label>
+      <p class="field-hint">Названия ЖК, агентств, застройщиков — и ссылки на их сайты, если есть.</p>
+      <textarea placeholder="ЖК «Пример» — https://...&#10;Агентство «...» — работают в том же сегменте, слабее по сервису"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Что точно нужно акцентировать на лендинге? <span class="field-required">*</span></label>
+      <p class="field-hint">Конкретные факты, цифры, гарантии, которые важно вынести в заголовки и буллеты.</p>
+      <textarea placeholder="Сдача через 8 месяцев. 0% рассрочка на год. Собственная управляющая компания..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли социальные доказательства? Укажите</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="proof" id="pr1"><label for="pr1">Отзывы клиентов</label></div>
+        <div class="option-item"><input type="checkbox" name="proof" id="pr2"><label for="pr2">Видео-отзывы</label></div>
+        <div class="option-item"><input type="checkbox" name="proof" id="pr3"><label for="pr3">Кейсы / истории покупателей</label></div>
+        <div class="option-item"><input type="checkbox" name="proof" id="pr4"><label for="pr4">Лицензии, награды, сертификаты</label></div>
+        <div class="option-item"><input type="checkbox" name="proof" id="pr5"><label for="pr5">Упоминания в СМИ</label></div>
+        <div class="option-item"><input type="checkbox" name="proof" id="pr6"><label for="pr6">Ничего пока нет</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 6: CONTENT -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <span class="section-number">06 /</span>
+      <h2 class="section-title">Контент и материалы</h2>
+      <span class="section-tag">Наполнение</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какие блоки должны быть на лендинге? <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl1"><label for="bl1">Hero / первый экран с CTA</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl2"><label for="bl2">О проекте / описание ЖК</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl3"><label for="bl3">Планировки и площади</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl4"><label for="bl4">Расположение и инфраструктура</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl5"><label for="bl5">Ход строительства / фото</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl6"><label for="bl6">Условия покупки / ипотека</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl7"><label for="bl7">Отзывы клиентов</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl8"><label for="bl8">Команда / застройщик</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl9"><label for="bl9">FAQ</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl10"><label for="bl10">Форма заявки / квиз</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl11"><label for="bl11">Акция / таймер</label></div>
+        <div class="option-item"><input type="checkbox" name="blocks" id="bl12"><label for="bl12">Галерея / рендеры</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какие материалы у вас уже есть?</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="assets" id="as1"><label for="as1">Логотип / брендинг</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as2"><label for="as2">Профессиональные фото объекта</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as3"><label for="as3">Архитектурные рендеры</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as4"><label for="as4">PDF каталог / планировки</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as5"><label for="as5">Видео (объект / аэросъёмка)</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as6"><label for="as6">Готовые тексты</label></div>
+        <div class="option-item"><input type="checkbox" name="assets" id="as7"><label for="as7">Ничего нет — нужна помощь</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Нужен ли квиз (опросник) вместо или вместе с формой заявки?</label>
+      <p class="field-hint">Квиз повышает конверсию: «Какая планировка вам подходит? → 3 вопроса → подборка + звонок менеджера».</p>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="quiz" id="qu1"><label for="qu1">Да, хочу квиз</label></div>
+        <div class="option-item"><input type="radio" name="quiz" id="qu2"><label for="qu2">Только обычная форма</label></div>
+        <div class="option-item"><input type="radio" name="quiz" id="qu3"><label for="qu3">Оба варианта</label></div>
+        <div class="option-item"><input type="radio" name="quiz" id="qu4"><label for="qu4">Пока не знаю</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 7: DESIGN -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <span class="section-number">07 /</span>
+      <h2 class="section-title">Стиль и дизайн</h2>
+      <span class="section-tag">Визуал</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Класс объекта и желаемое ощущение от сайта <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="class" id="cl1"><label for="cl1">Эконом — просто и ясно</label></div>
+        <div class="option-item"><input type="radio" name="class" id="cl2"><label for="cl2">Комфорт — современно, дружелюбно</label></div>
+        <div class="option-item"><input type="radio" name="class" id="cl3"><label for="cl3">Бизнес — строго, уверенно</label></div>
+        <div class="option-item"><input type="radio" name="class" id="cl4"><label for="cl4">Премиум — роскошь, сдержанность</label></div>
+        <div class="option-item"><input type="radio" name="class" id="cl5"><label for="cl5">Элит — минимализм высшего класса</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли фирменные цвета, шрифты, брендбук?</label>
+      <textarea placeholder="Основной цвет: #1A3A5C, акцент: золото. Шрифт: Montserrat. Или: «брендбука нет, придумайте сами»"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Сайты-ориентиры — что нравится визуально</label>
+      <p class="field-hint">Приложите 2–4 ссылки на сайты (не обязательно из ниши), дизайн которых вам близок. Объясните, что именно нравится.</p>
+      <textarea placeholder="https://... — нравится тёмная тема и крупная типографика&#10;https://... — нравится подача планировок"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Что точно не нравится в дизайне / чего хотите избежать?</label>
+      <textarea placeholder="Не хочу яркие кричащие цвета. Не хочу старомодный вид. Не хочу перегруженность..."></textarea>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 8: TECH -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <span class="section-number">08 /</span>
+      <h2 class="section-title">Технические требования</h2>
+      <span class="section-tag">Разработка</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли домен и хостинг?</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="hosting" id="ho1"><label for="ho1">Да, всё есть</label></div>
+        <div class="option-item"><input type="radio" name="hosting" id="ho2"><label for="ho2">Есть домен, нет хостинга</label></div>
+        <div class="option-item"><input type="radio" name="hosting" id="ho3"><label for="ho3">Ничего нет — нужна помощь</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Нужна ли интеграция с CRM / мессенджерами?</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="integr" id="in1"><label for="in1">AmoCRM / Битрикс24</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in2"><label for="in2">Telegram уведомления</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in3"><label for="in3">WhatsApp уведомления</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in4"><label for="in4">Яндекс.Метрика + цели</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in5"><label for="in5">Google Analytics</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in6"><label for="in6">Пиксель ВКонтакте</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in7"><label for="in7">Calltracking (отслеживание звонков)</label></div>
+        <div class="option-item"><input type="checkbox" name="integr" id="in8"><label for="in8">Ничего не нужно</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Особый функционал, который должен присутствовать</label>
+      <p class="field-hint">Интерактивные планировки, 3D-тур, онлайн-расчёт ипотеки, шахматка, карта — что важно?</p>
+      <textarea placeholder="Хочу калькулятор ипотеки. Хочу интерактивную схему этажа с выбором квартир..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Сроки запуска <span class="field-required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="deadline" id="dl1"><label for="dl1">Срочно — до 2 недель</label></div>
+        <div class="option-item"><input type="radio" name="deadline" id="dl2"><label for="dl2">Стандартно — 2–4 недели</label></div>
+        <div class="option-item"><input type="radio" name="deadline" id="dl3"><label for="dl3">Комфортно — 4–6 недель</label></div>
+        <div class="option-item"><input type="radio" name="deadline" id="dl4"><label for="dl4">Сроки пока открыты</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <!-- BLOCK 9: EXTRAS -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <span class="section-number">09 /</span>
+      <h2 class="section-title">Дополнительно</h2>
+      <span class="section-tag">Контекст</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Был ли уже сайт? Почему меняете или создаёте новый?</label>
+      <textarea placeholder="Старый сайт на тильде, плохо конвертирует. Хотим что-то другое..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Есть ли понимание рекламного бюджета для трафика?</label>
+      <p class="field-hint">Это поможет правильно выстроить призывы к действию и ожидания по лидогенерации.</p>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="adbudget" id="ab1"><label for="ab1">До 30 000 ₽/мес</label></div>
+        <div class="option-item"><input type="radio" name="adbudget" id="ab2"><label for="ab2">30–100 000 ₽/мес</label></div>
+        <div class="option-item"><input type="radio" name="adbudget" id="ab3"><label for="ab3">100–300 000 ₽/мес</label></div>
+        <div class="option-item"><input type="radio" name="adbudget" id="ab4"><label for="ab4">Более 300 000 ₽/мес</label></div>
+        <div class="option-item"><input type="radio" name="adbudget" id="ab5"><label for="ab5">Пока не определились</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Какой результат через 3 месяца после запуска будет для вас успехом?</label>
+      <p class="field-hint">Например: «Х заявок в месяц по цене до Y рублей». Это поможет выстроить правильные ожидания.</p>
+      <input type="text" placeholder="50 заявок в месяц по цене до 3 000 ₽ за лид">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Что ещё важно нам знать?</label>
+      <p class="field-hint">Любой контекст, который поможет создать лучший результат.</p>
+      <textarea placeholder="Сезонность, особенности региона, нюансы работы с застройщиком, запланированные акции..."></textarea>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <button class="submit-btn" onclick="handleSubmit()">
+      <span>Отправить бриф</span>
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+        <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <p class="submit-note">Мы свяжемся в течение 24 часов после получения брифа</p>
+    <div id="success-msg">
+      <p class="success-title">Бриф получен</p>
+      <p style="font-size:13px;color:var(--text-mid)">Мы изучим ваши ответы и свяжемся с вами в течение 24 часов для уточнения деталей и обсуждения проекта.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">RAUJIN STUDIO</div>
+  <div class="footer-copy">© 2026 — Бриф · Разработка лендинга · Недвижимость</div>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  // Intersection Observer for section reveals
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // Telegram config
+  const TG_TOKEN = '8517497606:AAGAV3_4yu0eDQ3iltN4gg1uzgjf0bv93iw';
+  const TG_CHAT  = '486560648';
+
+  // Collect all filled fields
+  function collectData() {
+    const lines = [];
+
+    // Text / textarea / select inputs with a label
+    document.querySelectorAll('.field').forEach(field => {
+      const label = field.querySelector('.field-label');
+      if (!label) return;
+      const labelText = label.textContent.replace('*','').trim();
+
+      // text inputs
+      const input = field.querySelector('input[type="text"], input[type="email"], input[type="tel"], input[type="url"], textarea');
+      if (input && input.value.trim()) {
+        lines.push(`▸ ${labelText}\n${input.value.trim()}`);
+        return;
+      }
+
+      // radio / checkbox
+      const checked = [...field.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked')];
+      if (checked.length) {
+        const vals = checked.map(c => {
+          const lbl = field.querySelector(`label[for="${c.id}"]`);
+          return lbl ? lbl.textContent.trim() : c.value;
+        }).join(', ');
+        lines.push(`▸ ${labelText}\n${vals}`);
+      }
+    });
+
+    return lines.length ? lines.join('\n\n') : null;
+  }
+
+  async function handleSubmit() {
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'Отправляю...';
+
+    const data = collectData();
+
+    const text = data
+      ? `🗂 *Новый бриф — Недвижимость*\n\n${data}`
+      : `🗂 *Новый бриф — Недвижимость*\n\n_(форма отправлена без заполнения)_`;
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TG_CHAT,
+          text: text,
+          parse_mode: 'Markdown'
+        })
+      });
+
+      const json = await res.json();
+
+      if (json.ok) {
+        document.getElementById('success-msg').classList.add('show');
+        btn.style.opacity = '0.4';
+        document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        alert('Ошибка отправки: ' + (json.description || 'неизвестно'));
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'Отправить бриф';
+      }
+    } catch (e) {
+      alert('Ошибка сети. Проверьте подключение.');
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Отправить бриф';
+    }
+  }
+</script>
+</body>
+</html>
