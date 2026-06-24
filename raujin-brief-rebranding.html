@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>БРИФ — Ребрендинг | RAUJIN STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --gold: #C4A35A;
+    --gold-dim: rgba(196,163,90,0.12);
+    --gold-border: rgba(196,163,90,0.22);
+    --text: #E8E0D0;
+    --text-dim: rgba(232,224,208,0.42);
+    --text-mid: rgba(232,224,208,0.68);
+    --surface: rgba(255,255,255,0.025);
+    --surface-hover: rgba(196,163,90,0.055);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.55}
+  #progress-bar{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);z-index:999;transition:width 0.1s linear;width:0%}
+  header{position:fixed;top:0;left:0;right:0;z-index:100;padding:24px 48px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(8,8,8,0.96) 0%,transparent 100%);backdrop-filter:blur(10px)}
+  .logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;letter-spacing:0.16em;color:var(--gold);text-transform:uppercase}
+  .logo span{color:var(--text-dim);font-weight:300;font-style:italic;font-size:12px;letter-spacing:0.05em;margin-left:12px}
+  .header-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.22em;text-transform:uppercase}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:15%;right:-8%;width:560px;height:560px;background:radial-gradient(circle,rgba(196,163,90,0.055) 0%,transparent 65%);pointer-events:none}
+  .hero-motif{position:absolute;right:9%;top:50%;transform:translateY(-50%) rotate(13deg);width:300px;height:300px;border:1px solid rgba(196,163,90,0.07);pointer-events:none}
+  .hero-motif::before{content:'';position:absolute;inset:22px;border:1px solid rgba(196,163,90,0.04)}
+  .hero-motif::after{content:'';position:absolute;inset:48px;border:1px solid rgba(196,163,90,0.025)}
+  .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.32em;text-transform:uppercase;margin-bottom:32px;opacity:0;animation:fadeUp 0.8s ease 0.2s forwards}
+  .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6.5vw,88px);font-weight:300;line-height:1.0;letter-spacing:-0.01em;margin-bottom:28px;max-width:680px;opacity:0;animation:fadeUp 0.8s ease 0.4s forwards}
+  .hero-title em{font-style:italic;color:var(--gold)}
+  .hero-sub{font-size:13px;color:var(--text-mid);max-width:480px;line-height:1.85;margin-bottom:56px;opacity:0;animation:fadeUp 0.8s ease 0.6s forwards}
+  .hero-meta{display:flex;gap:48px;opacity:0;animation:fadeUp 0.8s ease 0.8s forwards;flex-wrap:wrap}
+  .meta-item{display:flex;flex-direction:column;gap:4px}
+  .meta-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:0.26em;text-transform:uppercase}
+  .meta-value{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--gold);font-weight:400}
+  .scroll-hint{position:absolute;bottom:40px;left:48px;display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:0.22em;text-transform:uppercase;opacity:0;animation:fadeUp 0.8s ease 1.2s forwards}
+  .scroll-line{width:32px;height:1px;background:var(--gold-border);position:relative;overflow:hidden}
+  .scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);animation:slideLine 2s ease-in-out infinite}
+  main{max-width:900px;margin:0 auto;padding:0 48px 120px}
+  .section{margin-bottom:80px;opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+  .section.visible{opacity:1;transform:none}
+  .section-header{display:flex;align-items:baseline;gap:20px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--gold-border)}
+  .section-number{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.2em;min-width:32px}
+  .section-title{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;letter-spacing:0.02em;color:var(--text)}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--gold-border);white-space:nowrap}
+  .field{margin-bottom:28px}
+  .field-label{display:block;font-size:11px;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px}
+  .field-hint{font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:10px;font-style:italic}
+  .field-required{color:var(--gold);margin-left:4px}
+  input[type="text"],input[type="email"],input[type="tel"],input[type="url"],textarea,select{width:100%;background:var(--surface);border:1px solid var(--gold-border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;padding:14px 18px;outline:none;transition:border-color 0.25s,background 0.25s;appearance:none;-webkit-appearance:none;resize:vertical}
+  textarea{min-height:96px}
+  input:focus,textarea:focus,select:focus{border-color:var(--gold);background:var(--surface-hover)}
+  input::placeholder,textarea::placeholder{color:rgba(232,224,208,0.18);font-style:italic}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A35A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;cursor:pointer}
+  select option{background:#111;color:var(--text)}
+  .options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+  .option-item{position:relative}
+  .option-item input{position:absolute;opacity:0;width:0;height:0}
+  .option-item label{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid var(--gold-border);cursor:pointer;font-size:13px;color:var(--text-mid);transition:all 0.2s;background:var(--surface)}
+  .option-item label::before{content:'';width:13px;height:13px;border:1px solid var(--gold-border);flex-shrink:0;transition:all 0.2s;transform:rotate(13deg)}
+  .option-item input:checked+label{border-color:var(--gold);color:var(--text);background:var(--gold-dim)}
+  .option-item input:checked+label::before{background:var(--gold);border-color:var(--gold)}
+  .option-item label:hover{border-color:rgba(196,163,90,0.48);background:var(--surface-hover)}
+  .divider{display:flex;align-items:center;gap:16px;margin:48px 0}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gold-border)}
+  .divider-mark{width:8px;height:8px;border:1px solid var(--gold);transform:rotate(13deg);flex-shrink:0}
+  .info-block{padding:18px 22px;border-left:1px solid var(--gold);background:var(--gold-dim);margin-bottom:32px;font-size:13px;color:var(--text-mid);line-height:1.75}
+  .info-block strong{color:var(--gold);font-weight:500}
+  .warn-block{padding:18px 22px;border-left:1px solid rgba(220,80,60,0.6);background:rgba(220,80,60,0.07);margin-bottom:32px;font-size:13px;color:var(--text-mid);line-height:1.75}
+  .warn-block strong{color:rgba(220,130,100,0.9);font-weight:500}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .submit-area{text-align:center;padding:80px 0 40px}
+  .submit-btn{position:relative;display:inline-flex;align-items:center;gap:16px;padding:20px 56px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.26em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;overflow:hidden}
+  .submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;z-index:0}
+  .submit-btn:hover::before{transform:scaleX(1)}
+  .submit-btn:hover{color:var(--bg)}
+  .submit-btn span,.submit-btn svg{position:relative;z-index:1}
+  .submit-note{margin-top:24px;font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+  #success-msg{display:none;padding:24px;border:1px solid var(--gold);background:var(--gold-dim);text-align:center;margin-top:24px}
+  #success-msg.show{display:block}
+  .success-title{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);margin-bottom:8px}
+  footer{border-top:1px solid var(--gold-border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
+  .footer-logo{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase}
+  .footer-copy{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.15em}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideLine{0%{left:-100%}50%,100%{left:100%}}
+  @media(max-width:640px){
+    header{padding:20px 24px}
+    .logo span{display:none}
+    .hero{padding:100px 24px 64px}
+    .hero-motif{display:none}
+    main{padding:0 24px 80px}
+    .hero-meta{gap:28px}
+    footer{padding:24px;flex-direction:column;gap:8px}
+    .two-col,.three-col{grid-template-columns:1fr}
+    .options-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">RAUJIN STUDIO <span>Бриф · Ребрендинг</span></div>
+  <div class="header-label">Брендинг · Айдентика · Сайт · КП</div>
+</header>
+
+<section class="hero">
+  <div class="hero-motif"></div>
+  <div class="hero-eyebrow">Brief · Rebranding · 2026</div>
+  <h1 class="hero-title">Расскажите<br>о вашем <em>бренде</em></h1>
+  <p class="hero-sub">Этот бриф охватывает всё необходимое для подготовки точного коммерческого предложения. Чем подробнее ответы — тем точнее смета и тем меньше вопросов в процессе работы.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><span class="meta-label">Блоков</span><span class="meta-value">12</span></div>
+    <div class="meta-item"><span class="meta-label">Время заполнения</span><span class="meta-value">~20 мин</span></div>
+    <div class="meta-item"><span class="meta-label">Результат</span><span class="meta-value">Точное КП</span></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>прокрутите вниз</div>
+</section>
+
+<main>
+
+<!-- 01: КОНТАКТ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <span class="section-number">01 /</span>
+    <h2 class="section-title">Контактные данные</h2>
+    <span class="section-tag">О вас</span>
+  </div>
+
+  <div class="two-col">
+    <div class="field">
+      <label class="field-label">Имя <span class="field-required">*</span></label>
+      <input type="text" placeholder="Александр">
+    </div>
+    <div class="field">
+      <label class="field-label">Должность / роль <span class="field-required">*</span></label>
+      <input type="text" placeholder="Директор / Маркетолог / Владелец">
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="field">
+      <label class="field-label">Telegram <span class="field-required">*</span></label>
+      <input type="text" placeholder="@username">
+    </div>
+    <div class="field">
+      <label class="field-label">Телефон или email</label>
+      <input type="text" placeholder="+7 900 000-00-00">
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Название компании <span class="field-required">*</span></label>
+    <input type="text" placeholder="ООО «Класс Клининг»">
+  </div>
+
+  <div class="field">
+    <label class="field-label">Сайт компании</label>
+    <input type="url" placeholder="https://class-cleaning.ru">
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто принимает финальное решение по проекту? <span class="field-required">*</span></label>
+    <p class="field-hint">Это важно для правильного выстраивания согласований и коммуникации.</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="decision" id="dc1"><label for="dc1">Я сам(а)</label></div>
+      <div class="option-item"><input type="radio" name="decision" id="dc2"><label for="dc2">Директор / собственник</label></div>
+      <div class="option-item"><input type="radio" name="decision" id="dc3"><label for="dc3">Совет / комитет</label></div>
+      <div class="option-item"><input type="radio" name="decision" id="dc4"><label for="dc4">Решение коллегиальное</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужно ли подписывать NDA перед началом работ?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="nda" id="nda1"><label for="nda1">Да, обязательно</label></div>
+      <div class="option-item"><input type="radio" name="nda" id="nda2"><label for="nda2">Нет, не нужно</label></div>
+      <div class="option-item"><input type="radio" name="nda" id="nda3"><label for="nda3">По ситуации</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 02: О КОМПАНИИ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <span class="section-number">02 /</span>
+    <h2 class="section-title">О компании</h2>
+    <span class="section-tag">Текущее состояние</span>
+  </div>
+
+  <div class="info-block">
+    <strong>Зачем этот блок.</strong> Мы должны понять, кто вы есть сейчас — чтобы понять, как правильно вас показать. Чем честнее ответы, тем точнее будет новый бренд.
+  </div>
+
+  <div class="two-col">
+    <div class="field">
+      <label class="field-label">Год основания <span class="field-required">*</span></label>
+      <input type="text" placeholder="2007">
+    </div>
+    <div class="field">
+      <label class="field-label">Город / география работы <span class="field-required">*</span></label>
+      <input type="text" placeholder="Санкт-Петербург, Москва...">
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Сколько сотрудников в компании?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="team" id="tm1"><label for="tm1">До 10</label></div>
+      <div class="option-item"><input type="radio" name="team" id="tm2"><label for="tm2">10–50</label></div>
+      <div class="option-item"><input type="radio" name="team" id="tm3"><label for="tm3">50–150</label></div>
+      <div class="option-item"><input type="radio" name="team" id="tm4"><label for="tm4">150–500</label></div>
+      <div class="option-item"><input type="radio" name="team" id="tm5"><label for="tm5">Более 500</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Какой сегмент рынка — основной? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="seg" id="sg1"><label for="sg1">B2B — бизнес (офисы, ТЦ, БЦ)</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg2"><label for="sg2">B2B — производство / склады</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg3"><label for="sg3">B2B — отели / апартаменты</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg4"><label for="sg4">B2B — медицина / фармацевтика</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg5"><label for="sg5">B2B — государственные объекты</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg6"><label for="sg6">B2C — частные клиенты</label></div>
+      <div class="option-item"><input type="checkbox" name="seg" id="sg7"><label for="sg7">B2G — госконтракты / тендеры</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Назовите 3–5 ключевых услуг, которые приносят основную выручку <span class="field-required">*</span></label>
+    <textarea placeholder="1. Ежедневная уборка офисов по договору&#10;2. Генеральная уборка после ремонта&#10;3. Мойка фасадов и стекла&#10;4. Нанесение полимерных покрытий&#10;5. Уборка гостиничного фонда"></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли уникальные / специализированные услуги, которых нет у большинства конкурентов?</label>
+    <textarea placeholder="Нанесение полимерных покрытий, кристаллизация мрамора, грязезащитные системы, химчистка напольных покрытий..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Укажите 5–10 знаковых клиентов (если нет NDA на упоминание)</label>
+    <p class="field-hint">Именно они станут главным аргументом в новом бренде. Государственные структуры, крупные бренды — всё это ценно.</p>
+    <textarea placeholder="Апарт-отели VALO, БЦ «Невский Плаза», БАЛТИНВЕСТБАНК, УФМС, Нефтяной порт Усть-Луга..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли сертификаты, лицензии, допуски, членство в ассоциациях?</label>
+    <textarea placeholder="ISO 9001, членство в АРУК, допуск к гостайне, аттестация на работу с медучреждениями..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Примерный годовой оборот компании</label>
+    <p class="field-hint">Нужно для понимания масштаба — это не влияет на стоимость работ, но помогает предложить адекватный масштаб брендинга.</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="revenue" id="rv1"><label for="rv1">До 10 млн ₽/год</label></div>
+      <div class="option-item"><input type="radio" name="revenue" id="rv2"><label for="rv2">10–50 млн ₽/год</label></div>
+      <div class="option-item"><input type="radio" name="revenue" id="rv3"><label for="rv3">50–200 млн ₽/год</label></div>
+      <div class="option-item"><input type="radio" name="revenue" id="rv4"><label for="rv4">200+ млн ₽/год</label></div>
+      <div class="option-item"><input type="radio" name="revenue" id="rv5"><label for="rv5">Не готов(а) раскрывать</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 03: ЦЕЛИ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <span class="section-number">03 /</span>
+    <h2 class="section-title">Цели и задачи ребрендинга</h2>
+    <span class="section-tag">Зачем это</span>
+  </div>
+
+  <div class="warn-block">
+    <strong>Самый важный блок.</strong> Ответы здесь определяют всё: стратегию, масштаб работ, приоритеты. Не пропускайте и не отвечайте формально — «улучшить имидж» нам не поможет.
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что стало триггером для ребрендинга именно сейчас? <span class="field-required">*</span></label>
+    <p class="field-hint">Конкретная ситуация: потеря крупного клиента, выход на новый рынок, смена владельца, конкуренты вырвались вперёд, готовитесь к продаже бизнеса?</p>
+    <textarea placeholder="Хотим выйти на рынок Москвы. Текущий бренд выглядит непрезентабельно на фоне московских конкурентов — теряем тендеры из-за внешнего вида коммерческих предложений..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что сейчас не работает в текущем бренде? <span class="field-required">*</span></label>
+    <p class="field-hint">Честная самооценка. Что стыдно показать клиенту? Что вызывает вопросы?</p>
+    <textarea placeholder="Логотип сделан в 2008 году. Сайт не обновлялся 3 года. Презентация сделана в PowerPoint, стыдно посылать крупным клиентам. Нет единого стиля..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Чего вы хотите добиться ребрендингом? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="goals" id="gl1"><label for="gl1">Привлекать более крупных B2B-клиентов</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl2"><label for="gl2">Повысить средний чек</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl3"><label for="gl3">Выйти в новый город / регион</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl4"><label for="gl4">Выиграть больше тендеров</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl5"><label for="gl5">Отстроиться от конкурентов</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl6"><label for="gl6">Привлечь инвестора / партнёра</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl7"><label for="gl7">Создать единый стиль всех материалов</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl8"><label for="gl8">Упростить привлечение сотрудников</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl9"><label for="gl9">Подготовить к франшизе / масштабированию</label></div>
+      <div class="option-item"><input type="checkbox" name="goals" id="gl10"><label for="gl10">Продать бизнес по более высокой оценке</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что из текущего бренда нужно обязательно сохранить?</label>
+    <p class="field-hint">Название, цвет, логотип, слоган — что клиенты уже знают и к чему привязаны.</p>
+    <textarea placeholder="Название «Класс Клининг» сохраняем. Цвет менять можно. Логотип можно переработать, но не убирать КК-монограмму полностью..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что точно нужно убрать или изменить?</label>
+    <textarea placeholder="Убрать голубой цвет — как у всех. Убрать слоган «Делаем мир чище» — банальный. Переработать логотип — выглядит как 2008 год..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Как вы хотите, чтобы вас воспринимали клиенты после ребрендинга? <span class="field-required">*</span></label>
+    <p class="field-hint">Три прилагательных или одно предложение. Это станет основой позиционирования.</p>
+    <textarea placeholder="Надёжный, системный, профессиональный. Хочу, чтобы клиент видел нас как долгосрочного инфраструктурного партнёра, а не как уборщиков..."></textarea>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 04: АУДИТОРИЯ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <span class="section-number">04 /</span>
+    <h2 class="section-title">Аудитория и позиционирование</h2>
+    <span class="section-tag">Для кого</span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто ваш приоритетный клиент — опишите портрет? <span class="field-required">*</span></label>
+    <p class="field-hint">Должность, тип компании, как принимает решение, что ему важно при выборе подрядчика.</p>
+    <textarea placeholder="Директор по АХО производственного предприятия, 35–55 лет. Принимает решение на основе репутации, опыта работы с похожими объектами и рекомендаций. Цена важна, но не первична — важна надёжность..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли несколько разных сегментов аудитории?</label>
+    <p class="field-hint">Например: B2B крупный + B2B малый + частные клиенты. Нужен ли разный язык для каждого?</p>
+    <textarea placeholder="Да: 1) Крупный B2B — промышленность, гостиницы, банки; 2) Малый B2B — офисы 200–2000 м²; 3) B2C — редко, но бывает при высоком среднем чеке..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Через какие каналы к вам чаще всего приходят клиенты сейчас?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="ch" id="ch1"><label for="ch1">Сарафанное радио / рекомендации</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch2"><label for="ch2">Холодные звонки / менеджеры</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch3"><label for="ch3">Тендеры и госзакупки</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch4"><label for="ch4">Поиск (Яндекс / Google)</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch5"><label for="ch5">2ГИС / Яндекс.Карты</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch6"><label for="ch6">Соцсети (VK, Telegram)</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch7"><label for="ch7">Авито / агрегаторы</label></div>
+      <div class="option-item"><input type="checkbox" name="ch" id="ch8"><label for="ch8">Отраслевые выставки / события</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Как клиент обычно проверяет вас перед тем, как подписать договор?</label>
+    <p class="field-hint">Смотрит сайт? Читает отзывы? Просит презентацию? Приезжает в офис? Это определяет, какие материалы критически важны.</p>
+    <textarea placeholder="Смотрит сайт и отзывы на 2ГИС, потом просит презентацию и кейсы. Иногда звонит старому клиенту для отзыва..."></textarea>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 05: КОНКУРЕНТЫ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <span class="section-number">05 /</span>
+    <h2 class="section-title">Конкуренты и референсы</h2>
+    <span class="section-tag">Рынок</span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Назовите 3–5 прямых конкурентов <span class="field-required">*</span></label>
+    <p class="field-hint">Компании, с которыми вы сталкиваетесь в тендерах или за которых уходят клиенты.</p>
+    <textarea placeholder="1. Clean Service SPb&#10;2. ГК «Альянс»&#10;3. Чистый Мир&#10;4. ..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что конкуренты делают лучше вас в плане маркетинга и бренда?</label>
+    <textarea placeholder="У Clean Service красивый современный сайт. У Альянса — хороший Instagram с кейсами. У одного конкурента есть видеоролик о компании..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Бренды из любой сферы, которые вам нравятся визуально</label>
+    <p class="field-hint">Не обязательно клининг. Может быть автомобильная компания, IT-продукт, ресторан — важен сам визуальный язык.</p>
+    <textarea placeholder="Apple — за минимализм и дороговизну. Four Seasons — за сдержанную роскошь. ISS (Facility Services) — за B2B-строгость..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли бренды, которые точно не нравятся — и почему?</label>
+    <textarea placeholder="Не нравится кричащий жёлтый как у «Чистоты». Не нравятся пузатые иконки и мультяшный стиль — выглядит несерьёзно..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Как вы хотите выглядеть на фоне конкурентов? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="pos" id="ps1"><label for="ps1">Дороже и статуснее всех</label></div>
+      <div class="option-item"><input type="radio" name="pos" id="ps2"><label for="ps2">Технологичнее и современнее</label></div>
+      <div class="option-item"><input type="radio" name="pos" id="ps3"><label for="ps3">Надёжнее и стабильнее</label></div>
+      <div class="option-item"><input type="radio" name="pos" id="ps4"><label for="ps4">Специализированнее (эксперты в нише)</label></div>
+      <div class="option-item"><input type="radio" name="pos" id="ps5"><label for="ps5">Лучшее соотношение цена/качество</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 06: ВИЗУАЛ -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <span class="section-number">06 /</span>
+    <h2 class="section-title">Фирменный стиль и визуальный язык</h2>
+    <span class="section-tag">Айдентика</span>
+  </div>
+
+  <div class="info-block">
+    <strong>Объём работ по логотипу и айдентике — разный.</strong> «Рестайлинг» — корректируем существующее. «Редизайн» — делаем новый на основе старого. «С нуля» — полностью новый бренд. Стоимость отличается существенно.
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что нужно сделать с логотипом? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="logo" id="lo1"><label for="lo1">Рестайлинг (сохранить суть, обновить)</label></div>
+      <div class="option-item"><input type="radio" name="logo" id="lo2"><label for="lo2">Редизайн (переработать концепцию)</label></div>
+      <div class="option-item"><input type="radio" name="logo" id="lo3"><label for="lo3">Новый логотип с нуля</label></div>
+      <div class="option-item"><input type="radio" name="logo" id="lo4"><label for="lo4">Логотип устраивает — не трогать</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужно ли менять название компании или создавать новое?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="name" id="nm1"><label for="nm1">Нет, название остаётся</label></div>
+      <div class="option-item"><input type="radio" name="name" id="nm2"><label for="nm2">Да, хотим новое название</label></div>
+      <div class="option-item"><input type="radio" name="name" id="nm3"><label for="nm3">Нужен нейминг для нового суббренда</label></div>
+      <div class="option-item"><input type="radio" name="name" id="nm4"><label for="nm4">Пока не решили</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Желаемое настроение нового бренда <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="mood" id="md1"><label for="md1">Строгий / корпоративный</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md2"><label for="md2">Сдержанная роскошь / премиум</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md3"><label for="md3">Технологичный / инновационный</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md4"><label for="md4">Надёжный / основательный</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md5"><label for="md5">Современный / минималистичный</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md6"><label for="md6">Человечный / доверительный</label></div>
+      <div class="option-item"><input type="checkbox" name="mood" id="md7"><label for="md7">Экологичный / ответственный</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Предпочтения по цвету</label>
+    <p class="field-hint">Укажите, что нравится и что точно нет. Если есть корпоративные цвета, которые нужно сохранить — напишите HEX или название.</p>
+    <textarea placeholder="Нравится тёмный, графитовый. Нравится золото или медь как акцент. Не хочу голубой — как у всех клинеров. Не хочу зелёный..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужен ли слоган / дескриптор бренда?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="slogan" id="sl1"><label for="sl1">Да, разработайте новый</label></div>
+      <div class="option-item"><input type="radio" name="slogan" id="sl2"><label for="sl2">Есть слоган — нужно переосмыслить</label></div>
+      <div class="option-item"><input type="radio" name="slogan" id="sl3"><label for="sl3">Слоган устраивает, не трогать</label></div>
+      <div class="option-item"><input type="radio" name="slogan" id="sl4"><label for="sl4">Слоган не нужен</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужен ли полноценный брендбук?</label>
+    <p class="field-hint">Брендбук — документ с правилами применения фирменного стиля. Нужен если у вас несколько офисов, франшиза или вы работаете с разными подрядчиками.</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="bb" id="bb1"><label for="bb1">Да, полный брендбук</label></div>
+      <div class="option-item"><input type="radio" name="bb" id="bb2"><label for="radio" id="bb2"><label for="bb2">Гайдлайн (сокращённая версия)</label></div>
+      <div class="option-item"><input type="radio" name="bb" id="bb3"><label for="bb3">Нет, не нужен</label></div>
+      <div class="option-item"><input type="radio" name="bb" id="bb4"><label for="bb4">Пока не знаю</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 07: САЙТ -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <span class="section-number">07 /</span>
+    <h2 class="section-title">Сайт</h2>
+    <span class="section-tag">Веб</span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что нужно сделать с сайтом? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="site" id="si1"><label for="si1">Редизайн существующего</label></div>
+      <div class="option-item"><input type="radio" name="site" id="si2"><label for="si2">Новый сайт с нуля</label></div>
+      <div class="option-item"><input type="radio" name="site" id="si3"><label for="si3">Только обновить стиль под новый бренд</label></div>
+      <div class="option-item"><input type="radio" name="site" id="si4"><label for="si4">Сайт не нужен / уже хорошо</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">На какой платформе сейчас работает сайт?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="cms" id="cm1"><label for="cm1">Битрикс</label></div>
+      <div class="option-item"><input type="radio" name="cms" id="cm2"><label for="cm2">WordPress</label></div>
+      <div class="option-item"><input type="radio" name="cms" id="cm3"><label for="cm3">Tilda</label></div>
+      <div class="option-item"><input type="radio" name="cms" id="cm4"><label for="cm4">Кастомная разработка</label></div>
+      <div class="option-item"><input type="radio" name="cms" id="cm5"><label for="cm5">Не знаю</label></div>
+      <div class="option-item"><input type="radio" name="cms" id="cm6"><label for="cm6">Другое</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужно ли сохранить текущую платформу или переехать?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="cmskeep" id="ck1"><label for="ck1">Оставить текущую платформу</label></div>
+      <div class="option-item"><input type="radio" name="cmskeep" id="ck2"><label for="ck2">Переехать на другую</label></div>
+      <div class="option-item"><input type="radio" name="cmskeep" id="ck3"><label for="ck3">Новая кастомная разработка</label></div>
+      <div class="option-item"><input type="radio" name="cmskeep" id="ck4"><label for="ck4">Без разницы — предложите</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Примерное количество страниц нового сайта</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="pages" id="pg1"><label for="pg1">Лендинг (1 страница)</label></div>
+      <div class="option-item"><input type="radio" name="pages" id="pg2"><label for="pg2">5–10 страниц</label></div>
+      <div class="option-item"><input type="radio" name="pages" id="pg3"><label for="pg3">10–30 страниц</label></div>
+      <div class="option-item"><input type="radio" name="pages" id="pg4"><label for="pg4">30+ страниц (каталог услуг)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Какой функционал нужен на сайте?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="func" id="fn1"><label for="fn1">Форма заявки / обратная связь</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn2"><label for="fn2">Онлайн-калькулятор стоимости</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn3"><label for="fn3">Личный кабинет клиента</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn4"><label for="fn4">Чат / виджет онлайн-консультанта</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn5"><label for="fn5">Блог / статьи</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn6"><label for="fn6">Раздел вакансий / HR</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn7"><label for="fn7">Интеграция с CRM (Битрикс24, amoCRM)</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn8"><label for="fn8">Раздел кейсов / портфолио</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn9"><label for="fn9">Мультиязычность (EN и др.)</label></div>
+      <div class="option-item"><input type="checkbox" name="func" id="fn10"><label for="fn10">Раздел тендерной документации</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Важны ли SEO-оптимизация и позиции в поиске?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="seo" id="se1"><label for="se1">Да, SEO — приоритет</label></div>
+      <div class="option-item"><input type="radio" name="seo" id="se2"><label for="se2">Базовая оптимизация достаточно</label></div>
+      <div class="option-item"><input type="radio" name="seo" id="se3"><label for="se3">SEO не важен — клиенты приходят иначе</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужна ли интеграция со счётчиками аналитики?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="anal" id="al1"><label for="al1">Яндекс.Метрика</label></div>
+      <div class="option-item"><input type="checkbox" name="anal" id="al2"><label for="al2">Google Analytics</label></div>
+      <div class="option-item"><input type="checkbox" name="anal" id="al3"><label for="al3">Пиксели ВКонтакте</label></div>
+      <div class="option-item"><input type="checkbox" name="anal" id="al4"><label for="al4">Не нужно</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто будет обновлять сайт после сдачи?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="update" id="up1"><label for="up1">Сам(а) / внутренний сотрудник</label></div>
+      <div class="option-item"><input type="radio" name="update" id="up2"><label for="up2">Нужна ваша поддержка</label></div>
+      <div class="option-item"><input type="radio" name="update" id="up3"><label for="up3">Сторонний технический специалист</label></div>
+      <div class="option-item"><input type="radio" name="update" id="up4"><label for="up4">Сайт статичный — обновлять не планирую</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 08: ПРЕЗЕНТАЦИЯ -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <span class="section-number">08 /</span>
+    <h2 class="section-title">Коммерческая презентация</h2>
+    <span class="section-tag">КП / Pitch Deck</span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что нужно сделать с презентацией? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="pres" id="pr1"><label for="pr1">Переработать существующую</label></div>
+      <div class="option-item"><input type="radio" name="pres" id="pr2"><label for="pr2">Создать новую с нуля</label></div>
+      <div class="option-item"><input type="radio" name="pres" id="pr3"><label for="pr3">Презентация не нужна</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Для каких целей используется презентация?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu1"><label for="pu1">Холодный B2B-питч (первая встреча)</label></div>
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu2"><label for="pu2">Тендер / конкурс</label></div>
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu3"><label for="pu3">Отправка по email без встречи</label></div>
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu4"><label for="pu4">Показ на экране при встрече</label></div>
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu5"><label for="pu5">Для сотрудников / онбординг</label></div>
+      <div class="option-item"><input type="checkbox" name="presuse" id="pu6"><label for="pu6">Для партнёров и инвесторов</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужно ли несколько версий презентации?</label>
+    <p class="field-hint">Например: общая + под каждую услугу + под каждый сегмент клиентов.</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="presver" id="pv1"><label for="pv1">Одна универсальная</label></div>
+      <div class="option-item"><input type="radio" name="presver" id="pv2"><label for="pv2">2–3 версии под разные задачи</label></div>
+      <div class="option-item"><input type="radio" name="presver" id="pv3"><label for="pv3">Нужен шаблон для самостоятельного редактирования</label></div>
+      <div class="option-item"><input type="radio" name="presver" id="pv4"><label for="pv4">Пока не знаю</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">В каком формате нужна презентация?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="presfmt" id="pf1"><label for="pf1">PDF (финальная версия)</label></div>
+      <div class="option-item"><input type="checkbox" name="presfmt" id="pf2"><label for="pf2">PowerPoint (редактируемая)</label></div>
+      <div class="option-item"><input type="checkbox" name="presfmt" id="pf3"><label for="pf3">Keynote (для Mac)</label></div>
+      <div class="option-item"><input type="checkbox" name="presfmt" id="pf4"><label for="pf4">Версия для печати (A4 / A3)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Примерное количество слайдов</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="slides" id="sd1"><label for="sd1">До 10</label></div>
+      <div class="option-item"><input type="radio" name="slides" id="sd2"><label for="sd2">10–20</label></div>
+      <div class="option-item"><input type="radio" name="slides" id="sd3"><label for="sd3">20–40 (расширенная)</label></div>
+      <div class="option-item"><input type="radio" name="slides" id="sd4"><label for="sd4">Нет ограничений — сколько нужно</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто пишет тексты для презентации?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="prestext" id="pt1"><label for="pt1">Мы предоставим готовые тексты</label></div>
+      <div class="option-item"><input type="radio" name="prestext" id="pt2"><label for="pt2">Нужен копирайтинг от студии</label></div>
+      <div class="option-item"><input type="radio" name="prestext" id="pt3"><label for="pt3">Совместная работа над текстами</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 09: НОСИТЕЛИ -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <span class="section-number">09 /</span>
+    <h2 class="section-title">Дополнительные носители</h2>
+    <span class="section-tag">Точки касания</span>
+  </div>
+
+  <div class="info-block">
+    <strong>Каждый носитель — отдельная статья работ.</strong> Выберите только то, что реально нужно. Лучше сделать меньше, но качественно и системно.
+  </div>
+
+  <div class="field">
+    <label class="field-label">Печатные материалы</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="print" id="pn1"><label for="pn1">Визитки</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn2"><label for="pn2">Фирменный бланк / letterhead</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn3"><label for="pn3">Конверт фирменный</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn4"><label for="pn4">Папка для документов</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn5"><label for="pn5">Флаер / буклет об услугах</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn6"><label for="pn6">Листовка для B2C</label></div>
+      <div class="option-item"><input type="checkbox" name="print" id="pn7"><label for="pn7">Каталог услуг (печатный)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Цифровые носители</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="dig" id="dg1"><label for="dg1">Подпись email (корпоративная)</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg2"><label for="dg2">Шаблон КП / договора в Word</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg3"><label for="dg3">Шаблон сметы / прайс-листа</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg4"><label for="dg4">Аватар и обложка соцсетей</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg5"><label for="dg5">Шаблоны постов для соцсетей</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg6"><label for="dg6">Баннеры для рекламы (онлайн)</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg7"><label for="dg7">Шаблон отчёта для клиента</label></div>
+      <div class="option-item"><input type="checkbox" name="dig" id="dg8"><label for="dg8">Наклейка на бутылку / хим. средства</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Физические носители / среда</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="phys" id="ph1"><label for="ph1">Фирменная одежда / спецодежда (дизайн)</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph2"><label for="ph2">Брендирование транспорта</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph3"><label for="ph3">Вывеска / таблички</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph4"><label for="ph4">Оформление офиса / переговорной</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph5"><label for="ph5">Брендирование инвентаря и тележек</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph6"><label for="ph6">Корпоративные сувениры / мерч</label></div>
+      <div class="option-item"><input type="checkbox" name="phys" id="ph7"><label for="ph7">Ничего из перечисленного</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Нужна ли работа с отзывами и репутацией?</label>
+    <p class="field-hint">Оформление страниц на 2ГИС, Яндекс.Картах, Google Maps, Авито Услуги.</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="rep" id="rp1"><label for="rp1">Да, нужна помощь с оформлением</label></div>
+      <div class="option-item"><input type="radio" name="rep" id="rp2"><label for="rp2">Нет, справимся сами</label></div>
+      <div class="option-item"><input type="radio" name="rep" id="rp3"><label for="rp3">Интересно — расскажите подробнее</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 10: КОНТЕНТ -->
+<div class="section" id="s10">
+  <div class="section-header">
+    <span class="section-number">10 /</span>
+    <h2 class="section-title">Контент и материалы</h2>
+    <span class="section-tag">Наполнение</span>
+  </div>
+
+  <div class="warn-block">
+    <strong>Отсутствие контента — самая частая причина задержки проектов.</strong> Если нет фото объектов, реальных кейсов и логотипов клиентов — часть работы ляжет на ваши плечи. Это нужно учесть в сроках.
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли реальные фотографии ваших объектов, команды, процесса работы?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="photos" id="ph1x"><label for="ph1x">Да, есть качественные фото</label></div>
+      <div class="option-item"><input type="radio" name="photos" id="ph2x"><label for="ph2x">Есть, но низкого качества</label></div>
+      <div class="option-item"><input type="radio" name="photos" id="ph3x"><label for="ph3x">Нет — нужна фотосессия</label></div>
+      <div class="option-item"><input type="radio" name="photos" id="ph4x"><label for="ph4x">Нет — будем использовать сток</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли разрешение использовать логотипы и названия клиентов?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="logos" id="lg1"><label for="lg1">Да, большинство не против</label></div>
+      <div class="option-item"><input type="radio" name="logos" id="lg2"><label for="lg2">Нужно уточнить у клиентов</label></div>
+      <div class="option-item"><input type="radio" name="logos" id="lg3"><label for="lg3">Нет, есть NDA</label></div>
+      <div class="option-item"><input type="radio" name="logos" id="lg4"><label for="lg4">Можно показывать только сферу, без названий</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли кейсы с конкретными результатами, которые можно использовать?</label>
+    <p class="field-hint">Например: объект, задача, решение, результат в цифрах (площадь, срок, эффект).</p>
+    <textarea placeholder="Апарт-отели VALO: 480 номеров, ежедневная уборка + генеральная раз в квартал, обслуживаем 4 года. БЦ Невский Плаза: 12 000 м², ночная уборка..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто будет писать тексты для сайта и презентации? <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="copy" id="cp1"><label for="cp1">Мы предоставим готовые тексты</label></div>
+      <div class="option-item"><input type="radio" name="copy" id="cp2"><label for="cp2">Нужен копирайтинг от студии</label></div>
+      <div class="option-item"><input type="radio" name="copy" id="cp3"><label for="cp3">Совместная работа (вы — факты, мы — текст)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли видео-материалы о компании?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="video" id="vd1"><label for="vd1">Есть готовое видео</label></div>
+      <div class="option-item"><input type="radio" name="video" id="vd2"><label for="vd2">Нет, нужна съёмка</label></div>
+      <div class="option-item"><input type="radio" name="video" id="vd3"><label for="vd3">Нет, видео не нужно</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли существующие фирменные файлы, которые нужно передать студии?</label>
+    <p class="field-hint">Логотип в векторе (AI, EPS, SVG), фирменные шрифты, исходники сайта, прошлые варианты презентации.</p>
+    <textarea placeholder="Есть логотип в PNG (плохом качестве). Есть презентация в PowerPoint. Исходников сайта нет..."></textarea>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 11: ПРОЦЕСС -->
+<div class="section" id="s11">
+  <div class="section-header">
+    <span class="section-number">11 /</span>
+    <h2 class="section-title">Процесс и команда</h2>
+    <span class="section-tag">Как работаем</span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Кто со стороны заказчика участвует в согласованиях?</label>
+    <p class="field-hint">Один человек или несколько? Есть ли маркетолог, юрист, директор которых нужно «провести»? Чем больше согласующих — тем дольше.</p>
+    <textarea placeholder="Я сам финально согласую, иногда советуюсь с партнёром. Юрист смотрит договор. Дизайн согласую единолично..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Предпочтительный способ коммуникации в процессе работы</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="checkbox" name="comm" id="cm1x"><label for="cm1x">Telegram (основное)</label></div>
+      <div class="option-item"><input type="checkbox" name="comm" id="cm2x"><label for="cm2x">Видео-звонки (Zoom / Telegram)</label></div>
+      <div class="option-item"><input type="checkbox" name="comm" id="cm3x"><label for="cm3x">Email</label></div>
+      <div class="option-item"><input type="checkbox" name="comm" id="cm4x"><label for="cm4x">Встречи офлайн в СПб</label></div>
+      <div class="option-item"><input type="checkbox" name="comm" id="cm5x"><label for="cm5x">WhatsApp</label></div>
+      <div class="option-item"><input type="checkbox" name="comm" id="cm6x"><label for="cm6x">Notion / Google Docs для обратной связи</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Как удобнее давать правки на дизайн?</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="feedback" id="fb1"><label for="fb1">Комментарии в Figma</label></div>
+      <div class="option-item"><input type="radio" name="feedback" id="fb2"><label for="fb2">Голосовые / видео в Telegram</label></div>
+      <div class="option-item"><input type="radio" name="feedback" id="fb3"><label for="fb3">Текстом в чате</label></div>
+      <div class="option-item"><input type="radio" name="feedback" id="fb4"><label for="fb4">На встрече</label></div>
+      <div class="option-item"><input type="radio" name="feedback" id="fb5"><label for="fb5">Как скажете</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли собственный дизайнер или маркетолог в штате?</label>
+    <p class="field-hint">Если есть — нужно ли передать им исходники, провести обучение по новому стилю?</p>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="inhouse" id="ih1"><label for="ih1">Нет, всё на вас</label></div>
+      <div class="option-item"><input type="radio" name="inhouse" id="ih2"><label for="ih2">Есть дизайнер — нужны исходники</label></div>
+      <div class="option-item"><input type="radio" name="inhouse" id="ih3"><label for="ih3">Есть маркетолог — нужно передать стиль</label></div>
+      <div class="option-item"><input type="radio" name="inhouse" id="ih4"><label for="ih4">Есть подрядчики — нужно согласовать</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Работали ли раньше с брендинговыми или дизайн-студиями?</label>
+    <p class="field-hint">Если да — что понравилось, что нет? Это помогает выстроить правильный процесс с первого раза.</p>
+    <textarea placeholder="Да, 2 года назад работали с другой студией. Понравился результат, не понравилось что затянули срок на 2 месяца и плохо объясняли решения..."></textarea>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-mark"></div></div>
+
+<!-- 12: БЮДЖЕТ И СРОКИ -->
+<div class="section" id="s12">
+  <div class="section-header">
+    <span class="section-number">12 /</span>
+    <h2 class="section-title">Сроки и бюджет</h2>
+    <span class="section-tag">Финансы</span>
+  </div>
+
+  <div class="warn-block">
+    <strong>Без понимания бюджета мы не можем дать адекватное КП.</strong> Диапазон не влияет на наше отношение — он определяет, какой объём работ мы сможем предложить в рамках одного проекта.
+  </div>
+
+  <div class="field">
+    <label class="field-label">Есть ли жёсткий дедлайн? <span class="field-required">*</span></label>
+    <p class="field-hint">Например: тендер 15 сентября, выставка в октябре, открытие офиса в ноябре.</p>
+    <textarea placeholder="Нужна презентация к 1 сентября — идём в крупный тендер. Сайт — к октябрю. Всё остальное — без срочности..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Желаемые сроки выполнения всего проекта <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="deadline" id="dl1"><label for="dl1">До 1 месяца (очень срочно)</label></div>
+      <div class="option-item"><input type="radio" name="deadline" id="dl2"><label for="dl2">1–2 месяца</label></div>
+      <div class="option-item"><input type="radio" name="deadline" id="dl3"><label for="dl3">2–3 месяца</label></div>
+      <div class="option-item"><input type="radio" name="deadline" id="dl4"><label for="dl4">3–6 месяцев</label></div>
+      <div class="option-item"><input type="radio" name="deadline" id="dl5"><label for="dl5">Сроки открыты — качество важнее</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что нужно сделать в первую очередь, если придётся расставить приоритеты?</label>
+    <textarea placeholder="Сначала логотип + презентация (нужны для тендера). Потом сайт. Остальное — по возможности..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Ориентировочный бюджет на весь проект <span class="field-required">*</span></label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="budget" id="bg1"><label for="bg1">До 100 000 ₽</label></div>
+      <div class="option-item"><input type="radio" name="budget" id="bg2"><label for="bg2">100 000 – 300 000 ₽</label></div>
+      <div class="option-item"><input type="radio" name="budget" id="bg3"><label for="bg3">300 000 – 600 000 ₽</label></div>
+      <div class="option-item"><input type="radio" name="budget" id="bg4"><label for="bg4">600 000 – 1 000 000 ₽</label></div>
+      <div class="option-item"><input type="radio" name="budget" id="bg5"><label for="bg5">Свыше 1 000 000 ₽</label></div>
+      <div class="option-item"><input type="radio" name="budget" id="bg6"><label for="bg6">Пока не определился(ась)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Удобный формат оплаты</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="pay" id="py1"><label for="py1">50% аванс + 50% по результату</label></div>
+      <div class="option-item"><input type="radio" name="pay" id="py2"><label for="py2">Поэтапная оплата (по блокам)</label></div>
+      <div class="option-item"><input type="radio" name="pay" id="py3"><label for="py3">100% предоплата (со скидкой)</label></div>
+      <div class="option-item"><input type="radio" name="pay" id="py4"><label for="py4">Безнал с договором (юрлицо)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Тип оплаты</label>
+    <div class="options-grid">
+      <div class="option-item"><input type="radio" name="entity" id="et1"><label for="et1">Физическое лицо (наличные / карта)</label></div>
+      <div class="option-item"><input type="radio" name="entity" id="et2"><label for="et2">ИП (безнал, договор)</label></div>
+      <div class="option-item"><input type="radio" name="entity" id="et3"><label for="et3">ООО (безнал, с НДС)</label></div>
+      <div class="option-item"><input type="radio" name="entity" id="et4"><label for="et4">ООО (безнал, без НДС)</label></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что для вас будет означать успех этого проекта через 6 месяцев?</label>
+    <p class="field-hint">Конкретные показатели: выигранные тендеры, рост среднего чека, новые клиенты, закрытие сделок. Это помогает расставить правильные приоритеты.</p>
+    <textarea placeholder="Выиграть хотя бы 2 тендера из 5 следующих. Поднять средний чек на 20%. Выйти на московский рынок с первым клиентом..."></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Что ещё важно нам знать о проекте?</label>
+    <p class="field-hint">Любой контекст, который поможет дать точное и честное предложение. Нет ничего лишнего.</p>
+    <textarea placeholder="Компания на 50% принадлежит двум партнёрам — оба должны одобрить концепцию. Есть один конкурент, которого мы очень хотим обогнать в Петербурге..."></textarea>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button class="submit-btn" onclick="handleSubmit()">
+    <span>Отправить бриф</span>
+    <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+      <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <p class="submit-note">Мы изучим ответы и выйдем на связь в течение 24 часов с детальным КП</p>
+  <div id="success-msg">
+    <p class="success-title">Бриф получен</p>
+    <p style="font-size:13px;color:var(--text-mid)">Мы внимательно изучим все ответы и подготовим точное коммерческое предложение. Ждите звонка или сообщения в течение 24 часов.</p>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">RAUJIN STUDIO</div>
+  <div class="footer-copy">© 2026 — Бриф · Ребрендинг · Брендинг + Айдентика + Сайт</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  const TG_TOKEN = '8517497606:AAGAV3_4yu0eDQ3iltN4gg1uzgjf0bv93iw';
+  const TG_CHAT  = '486560648';
+
+  function collectData() {
+    const lines = [];
+    document.querySelectorAll('.section').forEach(section => {
+      const header = section.querySelector('.section-title');
+      if (!header) return;
+      const sectionTitle = header.textContent.trim();
+      const sectionLines = [];
+
+      section.querySelectorAll('.field').forEach(field => {
+        const label = field.querySelector('.field-label');
+        if (!label) return;
+        const labelText = label.textContent.replace('*','').trim();
+        const input = field.querySelector('input[type="text"],input[type="email"],input[type="tel"],input[type="url"],textarea');
+        if (input && input.value.trim()) {
+          sectionLines.push(`  ▸ ${labelText}\n    ${input.value.trim()}`);
+          return;
+        }
+        const checked = [...field.querySelectorAll('input[type="radio"]:checked,input[type="checkbox"]:checked')];
+        if (checked.length) {
+          const vals = checked.map(c => {
+            const lbl = field.querySelector(`label[for="${c.id}"]`);
+            return lbl ? lbl.textContent.trim() : c.value;
+          }).join(', ');
+          sectionLines.push(`  ▸ ${labelText}\n    ${vals}`);
+        }
+      });
+
+      if (sectionLines.length) {
+        lines.push(`\n📌 *${sectionTitle}*\n${sectionLines.join('\n\n')}`);
+      }
+    });
+    return lines.length ? lines.join('\n') : null;
+  }
+
+  async function handleSubmit() {
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'Отправляю...';
+
+    const data = collectData();
+    const text = data
+      ? `🏢 *Новый бриф — Ребрендинг*\n${data}`
+      : `🏢 *Новый бриф — Ребрендинг*\n\n_(форма отправлена без заполнения)_`;
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'Markdown' })
+      });
+      const json = await res.json();
+      if (json.ok) {
+        document.getElementById('success-msg').classList.add('show');
+        btn.style.opacity = '0.4';
+        document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        alert('Ошибка отправки: ' + (json.description || 'неизвестно'));
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'Отправить бриф';
+      }
+    } catch(e) {
+      alert('Ошибка сети. Проверьте подключение.');
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Отправить бриф';
+    }
+  }
+</script>
+</body>
+</html>
