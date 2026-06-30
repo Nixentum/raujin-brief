@@ -936,16 +936,16 @@
 
 <!-- SUBMIT -->
 <div class="submit-area">
-  <button class="submit-btn" onclick="handleSubmit()">
-    <span>Отправить бриф</span>
+  <button class="submit-btn" onclick="handleDownload()">
+    <span>Скачать бриф</span>
     <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-      <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M8 0v8M4 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
-  <p class="submit-note">Мы изучим ответы и выйдем на связь в течение 24 часов с детальным КП</p>
+  <p class="submit-note">Скачайте файл и отправьте нам в Telegram: <a href="https://t.me/raujin" style="color:var(--gold);text-decoration:none">@raujin</a></p>
   <div id="success-msg">
-    <p class="success-title">Бриф получен</p>
-    <p style="font-size:13px;color:var(--text-mid)">Мы внимательно изучим все ответы и подготовим точное коммерческое предложение. Ждите звонка или сообщения в течение 24 часов.</p>
+    <p class="success-title">Файл готов</p>
+    <p style="font-size:13px;color:var(--text-mid)">Бриф скачан. Отправьте файл нам в Telegram — <a href="https://t.me/raujin" style="color:var(--gold)">@raujin</a> — и мы подготовим КП в течение 24 часов.</p>
   </div>
 </div>
 
@@ -970,11 +970,8 @@
   }, { threshold: 0.06 });
   document.querySelectorAll('.section').forEach(s => observer.observe(s));
 
-  const TG_TOKEN = '8517497606:AAGAV3_4yu0eDQ3iltN4gg1uzgjf0bv93iw';
-  const TG_CHAT  = '486560648';
-
   function collectData() {
-    const lines = [];
+    const lines = ['БРИФ — РЕБРЕНДИНГ', 'RAUJIN STUDIO', '═'.repeat(48), ''];
     document.querySelectorAll('.section').forEach(section => {
       const header = section.querySelector('.section-title');
       if (!header) return;
@@ -1001,43 +998,30 @@
       });
 
       if (sectionLines.length) {
-        lines.push(`\n📌 *${sectionTitle}*\n${sectionLines.join('\n\n')}`);
+        lines.push('┌─ ' + sectionTitle.toUpperCase());
+        lines.push(sectionLines.join('\n\n'));
+        lines.push('');
       }
     });
-    return lines.length ? lines.join('\n') : null;
+    lines.push('═'.repeat(48));
+    lines.push('Дата заполнения: ' + new Date().toLocaleString('ru-RU'));
+    return lines.join('\n');
   }
 
-  async function handleSubmit() {
+  function handleDownload() {
     const btn = document.querySelector('.submit-btn');
-    btn.disabled = true;
-    btn.querySelector('span').textContent = 'Отправляю...';
-
     const data = collectData();
-    const text = data
-      ? `🏢 *Новый бриф — Ребрендинг*\n${data}`
-      : `🏢 *Новый бриф — Ребрендинг*\n\n_(форма отправлена без заполнения)_`;
-
-    try {
-      const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'Markdown' })
-      });
-      const json = await res.json();
-      if (json.ok) {
-        document.getElementById('success-msg').classList.add('show');
-        btn.style.opacity = '0.4';
-        document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        alert('Ошибка отправки: ' + (json.description || 'неизвестно'));
-        btn.disabled = false;
-        btn.querySelector('span').textContent = 'Отправить бриф';
-      }
-    } catch(e) {
-      alert('Ошибка сети. Проверьте подключение.');
-      btn.disabled = false;
-      btn.querySelector('span').textContent = 'Отправить бриф';
-    }
+    const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brief-rebranding-raujin.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    btn.style.opacity = '0.5';
+    btn.disabled = true;
+    document.getElementById('success-msg').classList.add('show');
+    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 </script>
 </body>
